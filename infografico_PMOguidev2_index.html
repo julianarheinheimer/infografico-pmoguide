@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico: A Jornada do Projeto na IPNET by Vivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F3E9;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flowchart-step {
+            border-left: 4px solid #FF8C42;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .flowchart-step::before {
+            content: '';
+            position: absolute;
+            left: -11px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #FF8C42;
+            border: 3px solid #F7F3E9;
+        }
+        .flowchart-step:not(:last-child) {
+            padding-bottom: 2rem;
+        }
+        #loading-indicator {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+        #loading-indicator span {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            margin: 0 0.25rem;
+            border-radius: 50%;
+            background-color: #D44D5C;
+            animation: bounce 0.6s infinite alternate;
+        }
+        #loading-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        #loading-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-1rem);
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#D44D5C] mb-2">A Jornada do Projeto na IPNET by Vivo</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Uma visualização do ciclo de vida, papéis e ferramentas que garantem o sucesso dos projetos de TI.</p>
+        </header>
+
+        <main>
+            <section id="flow" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#D44D5C]">O Fluxo do Projeto em 4 Fases</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    
+                    <div class="flowchart-step">
+                        <h3 class="text-xl font-semibold text-[#FFA62B] mb-2">1. Entrada</h3>
+                        <p class="text-gray-700">O processo começa com a recepção de um ticket via Fresh. O Assistente PMO organiza a documentação inicial, cria a estrutura de pastas no Drive e aloca os recursos, preparando o terreno para o Gerente de Projetos.</p>
+                    </div>
+
+                    <div class="flowchart-step">
+                        <h3 class="text-xl font-semibold text-[#FFA62B] mb-2">2. Planejamento</h3>
+                        <p class="text-gray-700">O Gerente de Projetos (GP) assume, analisando o escopo e definindo os marcos na Paymo. A reunião de Handover interno é crucial para validar a viabilidade técnica antes do Kick-off com o cliente.</p>
+                    </div>
+
+                    <div class="flowchart-step">
+                        <h3 class="text-xl font-semibold text-[#FFA62B] mb-2">3. Execução</h3>
+                        <p class="text-gray-700">Com o plano em ação, o GP monitora o progresso, controla a saúde financeira e comunica o status através de relatórios periódicos, garantindo o alinhamento constante entre a equipe e o cliente.</p>
+                    </div>
+
+                    <div class="flowchart-step">
+                        <h3 class="text-xl font-semibold text-[#FFA62B] mb-2">4. Encerramento</h3>
+                        <p class="text-gray-700">A fase final inclui a reunião de Handoff interno para lições aprendidas e o Close-out com o cliente. A área de Qualidade do PMO coleta feedback para a melhoria contínua dos processos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="roles" class="mb-16">
+                 <h2 class="text-3xl font-bold text-center mb-8 text-[#D44D5C]">Distribuição de Responsabilidades</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-10">O sucesso do projeto depende de uma clara divisão de papéis. O gráfico abaixo mostra como as responsabilidades são distribuídas entre os principais atores do processo. O Gerente de Projetos (GP) centraliza a maior parte das atividades estratégicas, enquanto o Assistente PMO é fundamental na fase inicial.</p>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="chart-container">
+                        <canvas id="rolesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="phases" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#D44D5C]">Envolvimento por Fase do Projeto</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-10">Cada fase do projeto exige um nível de envolvimento diferente de cada equipe. O gráfico de barras ilustra o protagonismo de cada time ao longo do ciclo de vida, desde a organização inicial pelo Assistente PMO até a execução pelo Time Técnico e o controle pelo GP.</p>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="chart-container" style="height: 450px; max-height: 500px;">
+                        <canvas id="phasesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gemini-qa" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#D44D5C]">Pergunte ao Guia ✨</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-6">Obtenha respostas detalhadas e específicas sobre o conteúdo do guia de gerenciamento de projetos. Experimente perguntar sobre termos, processos ou responsabilidades.</p>
+                <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
+                    <div class="flex flex-col md:flex-row gap-4 mb-4">
+                        <input type="text" id="questionInput" class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFA62B] transition-all" placeholder="Ex: O que é TAF?">
+                        <button id="askButton" class="bg-[#D44D5C] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#B53F4C] transition-colors whitespace-nowrap">Perguntar</button>
+                    </div>
+                    <div id="loading-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div id="responseArea" class="bg-gray-50 p-4 rounded-lg border border-gray-200 min-h-[100px] transition-all">
+                        <p class="text-gray-500">A sua resposta aparecerá aqui...</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tools" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#D44D5C]">Ecossistema de Ferramentas</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 text-center">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-5xl mb-2">🎟️</p>
+                        <h3 class="font-semibold text-lg">Fresh</h3>
+                        <p class="text-gray-600 text-sm">Ponto de partida. Gestão de tickets e entrada de novos projetos.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-5xl mb-2">📊</p>
+                        <h3 class="font-semibold text-lg">Paymo</h3>
+                        <p class="text-gray-600 text-sm">O cérebro do projeto. Controle de marcos, tarefas, horas e finanças.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-5xl mb-2">📁</p>
+                        <h3 class="font-semibold text-lg">Google Drive</h3>
+                        <p class="text-gray-600 text-sm">Repositório central para toda a documentação do projeto.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-5xl mb-2">💬</p>
+                        <h3 class="font-semibold text-lg">Spaces & WhatsApp</h3>
+                        <p class="text-gray-600 text-sm">Comunicação ágil e instantânea para o dia a dia.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-5xl mb-2">✉️</p>
+                        <h3 class="font-semibold text-lg">E-mail</h3>
+                        <p class="text-gray-600 text-sm">Canal para comunicações formais e registro de decisões.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="glossary">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#D44D5C]">Glossário Rápido</h2>
+                <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
+                    <ul class="space-y-3 text-gray-700">
+                        <li><span class="font-semibold text-[#D44D5C]">GP:</span> Gerente de Projetos.</li>
+                        <li><span class="font-semibold text-[#D44D5C]">PMO:</span> Project Management Office.</li>
+                        <li><span class="font-semibold text-[#D44D5C]">SOW:</span> Statement of Work (Proposta Técnica).</li>
+                        <li><span class="font-semibold text-[#D44D5C]">TAP:</span> Termo de Abertura do Projeto.</li>
+                        <li><span class="font-semibold text-[#D44D5C]">TAF:</span> Termo de Aceite Final.</li>
+                        <li><span class="font-semibold text-[#D44D5C]">CO / CX / TS:</span> Customer Onboarding / Customer Experience / Tech Sales.</li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-12 pt-8 border-t border-gray-300">
+            <p class="text-sm text-gray-500">Infográfico gerado a partir do PM Guide da IPNET by Vivo.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const energeticPlayfulPalette = {
+                primary: '#D44D5C',
+                secondary: '#FFA62B',
+                accent: '#FF8C42',
+                neutral: '#F7F3E9',
+                text: '#4C4C4C'
+            };
+
+            const tooltipTitleCallback = function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            };
+            
+            const wrapLabel = (label) => {
+                const maxLength = 16;
+                if (label.length <= maxLength) return label;
+                
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                
+                words.forEach(word => {
+                    if ((currentLine + word).length > maxLength) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const rolesCtx = document.getElementById('rolesChart').getContext('2d');
+            new Chart(rolesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Gerente de Projetos (GP)', 'Assistente PMO', 'Time Técnico', 'Equipe de Negócios (CO, CX, TS)'],
+                    datasets: [{
+                        label: 'Distribuição de Responsabilidades',
+                        data: [45, 25, 20, 10],
+                        backgroundColor: [
+                            energeticPlayfulPalette.primary,
+                            energeticPlayfulPalette.secondary,
+                            energeticPlayfulPalette.accent,
+                            '#FFC971'
+                        ],
+                        borderColor: energeticPlayfulPalette.neutral,
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Proporção de Atividades por Papel',
+                            font: { size: 18 },
+                            color: energeticPlayfulPalette.text
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    }
+                }
+            });
+
+            const phasesCtx = document.getElementById('phasesChart').getContext('2d');
+            const originalLabels = ['Assistente PMO', 'Gerente de Projetos (GP)', 'Time Técnico', 'Equipe de Negócios', 'PMO Quality'];
+            const wrappedLabels = originalLabels.map(wrapLabel);
+            
+            new Chart(phasesCtx, {
+                type: 'bar',
+                data: {
+                    labels: wrappedLabels,
+                    datasets: [
+                        {
+                            label: 'Entrada',
+                            data: [5, 1, 1, 2, 0],
+                            backgroundColor: '#FFC971',
+                        },
+                        {
+                            label: 'Planejamento',
+                            data: [1, 5, 3, 4, 0],
+                            backgroundColor: energeticPlayfulPalette.secondary,
+                        },
+                        {
+                            label: 'Execução',
+                            data: [0, 4, 5, 2, 0],
+                            backgroundColor: energeticPlayfulPalette.accent,
+                        },
+                        {
+                            label: 'Encerramento',
+                            data: [0, 4, 2, 2, 4],
+                            backgroundColor: energeticPlayfulPalette.primary,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Nível de Envolvimento (Estimado)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Envolvimento dos Times por Fase',
+                            font: { size: 18 },
+                            color: energeticPlayfulPalette.text
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        const questionInput = document.getElementById('questionInput');
+        const askButton = document.getElementById('askButton');
+        const responseArea = document.getElementById('responseArea');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const pdfContent = `spnet by vivo ELABORADOR/REVISOR: Juliana Silva Rheinheimer/Cindy Barduchi Data: 07/06/2023 ANÁLISE CRÍTICA E APROVAÇÃO: Data: VERSÃO: V3 Revisora V3: Juliana Lopes Data: 17/07/2025 1. 3. 4. NOSSO OBJETIVO COM ESSE DOCUMENTO.. 2 QUEM SÃO OS RESPONSÁVEIS POR ELE?.. 2 ATIVIDADES DETALHADAS.. 2 4.1 Qual a forma de entrada do projeto?. 2 4.2 Identificando o time interno do projeto. 3 4.3 Iniciando o planejamento do projeto. 4 4.3.1 Canal interno.... 4 4.3.2 Iniciando a comunicação com o cliente.. 6 4.3.5 Participantes das comunicações. 12 4.4 Iniciando o projeto e etapa de planejamento. 13 4.4.1 Paymo Assistente PMO. 14 PASSO A PASSO DE COMO EXCLUIR CLIENTE:. 17 Ao adicionar o método de cobrança, selecione Projeto de custo fixo, e em estimativa de horas, deve ser adicionado as horas TOTAIS da MC. O campo de custo do projeto deve ser preenchido com o valor do projeto, caso for em dólar, identificar na descrição do projeto, adicionando valor em dólar e câmbio.... 17 4.3.2 Paymo GP. 22 4.4 Em execução. 27 4.4.1 Registros. 29 4.4 Encerrando o projeto.. 31 4.4.1 Documentação final. 32 ACESSOS NECESSÁRIOS... 34 APÊNDICE A - LISTA DE ÁREA E SUBÁREAS/PROJETOS. 35 APÊNDICE B - FLUXOGRAMA.. 37 APÊNDICE C - GLOSSÁRIO.... 37 IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 1 spnet by vivo 1. NOSSO OBJETIVO COM ESSE DOCUMENTO Estabelecer as práticas de gerenciamento aplicáveis no planejamento, execução e finalização de projetos em Tecnologia da Informação. 2. PARA QUEM ELE SE DESTINA? Gerentes de projetos do PMO (Project Management Office) da IPNET by Vivo 3. QUEM SÃO OS RESPONSÁVEIS POR ELE? PMO e Gerente de Projetos. 4. ATIVIDADES DETALHADAS Abaixo, descreveremos todas as atividades que permeiam a organização e estruturação do trabalho do Gerente de Projetos (GP), desde o recebimento do projeto até seu encerramento e faturamento. 4.1 Qual a forma de entrada do projeto?. 2 4.2 Identificando o time interno do projeto. 3 4.3 Iniciando o planejamento do projeto. 4 4.3.1 Canal interno.... 4 4.3.2 Iniciando a comunicação com o cliente.. 6 4.3.5 Participantes das comunicações. 12 4.4 Iniciando o projeto e etapa de planejamento. 13 4.4.1 Paymo Assistente PMO. 14 PASSO A PASSO DE COMO EXCLUIR CLIENTE:. 17 Ao adicionar o método de cobrança, selecione Projeto de custo fixo, e em estimativa de horas, deve ser adicionado as horas TOTAIS da MC. O campo de custo do projeto deve ser preenchido com o valor do projeto, caso for em dólar, identificar na descrição do projeto, adicionando valor em dólar e câmbio.... 17 4.3.2 Paymo GP. 22 4.4 Em execução. 27 4.4.1 Registros. 29 4.4 Encerrando o projeto.. 31 4.4.1 Documentação final. 32 ACESSOS NECESSÁRIOS... 34 APÊNDICE A - LISTA DE ÁREA E SUBÁREAS/PROJETOS. 35 APÊNDICE B - FLUXOGRAMA.. 37 APÊNDICE C - GLOSSÁRIO.... 37 IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 2 spnet by vivo Contatos do cliente; Time interno: time técnico, Customer Onboarding (vendedor da conta), Customer Experience e Tech Sales. Email do contato Google (normalmente FSR). Caso a venda seja feita pela Vivo, contato do GN da Vivo. A assistência do PMO criará a pasta do projeto no drive para salvar todos os documentos referentes ao projeto, as reuniões e sessões gravadas, e demais arquivos que sejam relevantes para o histórico de trabalho. Importante que o GP, quando a acessar, crie, no mínimo, 3 pastas para fins de organização do material: 1. Gerenciamento do projeto; 2. Gravações (compartilhadas com o cliente); 3. Documentos do cliente (documentação técnica, assessment, relatórios, etc.). IMPORTANTE! Nos projetos que tenham investimento da Google, enquanto os líderes estão escolhendo os recursos para iniciar a execução das atividades, a assistência do PMO deve confirmar com Vitória Leitão (vitoria.leitao@ipnet.cloud) se o investimento está aprovado pela Google. 4.2 Identificando o time interno do projeto O assistente do PMO aciona o Squad Líder da área em que o projeto será desenvolvido, para buscar recursos para a execução da etapa técnica (líder técnico e técnico) e também o Squad Líder do $PMO^{2}$ Esse questionamento pode ser feito no mesmo grupo e na mesma thread de encaminhamento do projeto. No caso do CX, customer experience, pode-se acessar o looker de CX e filtrar pelo cliente (org_name) e obter o nome do responsável no campo "org_owner_name". Caso esse campo ainda esteja com o nome do CO, será necessário perguntar ao grupo do Space [IPNET] CX-GP, qual será o CX responsável pela conta. Vale ressaltar que somente clientes da base têm CX. Os clientes da base são clientes que têm contrato recorrente com a IPNET. Áreas: Cloud, GWS, Dev ou Dia. 2 PMO: Squad Enterprise e GOV, Squad SMB e Corporate e Squad MSP. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 3 spnet by vivo Como exemplos de contrato recorrente, temos: licenciamento de workspace, GCP e Maps, serviços de sustentação, Cloud Core e Cloud Productivity. Para o Tech Sales (TS), é necessário que o assistente verifique dentro do canal de pré-venda do projeto, o TS que elaborou a proposta. Caso não tenha um canal de PV, solicite essa informação ao CO. Lembrando que identificar o time interno do projeto é tarefa do assistente do PMO, porém nada impede do GP seguir esse passo a passo para encontrar as informações caso não estejam disponíveis no space. 4.3 Iniciando o planejamento do projeto 4.3.1 Canal interno É função do assistente do PMO solicitar ao CO para adicioná-lo no canal de pré-venda do cliente, para que assim, agora dentro do canal, o assistente adicione o GP responsável e passe a utilizar esse canal como interno do projeto. Nesse canal, é de suma importância que estejam nele: o squad líder do time técnico, o time técnico, o líder técnico, CX, CO, TS, squad líder do PMO, auditora de processos, head de Professional Services, head do PMО е СТО. Esse grupo será utilizado para as comunicações relacionadas ao projeto, dúvidas trazidas pelo GP, organização das demandas que surgirem ao longo do cronograma, e atualizações de status do projeto, etc. Ao adentrar no canal, o gerente de projetos deve: 1) Enviar a mensagem de abertura do canal para que todos os participantes saibam dos papeis de cada um. 2) Liberar o acesso a todos nas configurações do canal, de acordo com a imagem abaixo: IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 4 spnet by vivo Criar um espaço Nome do espaco + Descrição (opcional) Digite.o.come ou e mail da pessoa ou do grupo Todos em IPNET Growth Partn tém acesso ao espaço Todos Growtodettuticipar aita 0/64 0/150 3) Renomear o canal de acordo com o seguinte exemplo [IPNET ou EXTERNO] CLIENTE | TORRE | NOME DO PROJETO: NOMEAÇÃO CANAL DE COMUNICAÇÃO CHAT GOOGLE IPNET OU EXTERNOJ CLIENTE TORRE NOME DO PROJETO Use IPNET se for um canal interno. Use EXTERNO se for um canal com cliente ou Google Nome da empresa do cliente que está sendo feito o projeto Área do projeto no DT (exemplo: infra, colaboração, dados, secops) Tipo de projeto (exemplo: Migração GWS, Migração Looker, Treinamento) IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 | +55 (11) 3199 7300 ww.ipnet.cloud 5 spnet by vivo 4.3.2 Iniciando a comunicação com o cliente O primeiro contato do PMO com o cliente acontece pelo e-mail de Boas-vindas, conforme modelo contido no Fluxo de Comunicação. Nele, indicamos que recebemos o projeto e que ele será iniciado em breve. Esse e-mail será enviado pela assistência do PMо. 4.3.3 Planejamento interno do projeto Assim que o projeto for aprovado, o Gerente de Projeto deverá realizar a análise da proposta técnica ou da SOW (Statement of Work). Nessa etapa, é fundamental mapear claramente o que está dentro e fora do escopo contratado, os valores envolvidos e o prazo previsto para a execução das atividades. Após essa análise, o GP deverá acessar o projeto na plataforma Paymo e informar os prazos previstos para os marcos já definidos no início do projeto. Esses marcos são pontos de controle importantes e devem ser atualizados de acordo com as datas planejadas para cada fase ou entrega relevante. Importante: Os nomes dos marcos já cadastrados não podem ser alterados. Eles devem seguir obrigatoriamente a nomenclatura padronizada definida pelo PMO. Caso tenha dúvidas sobre o padrão de nomenclatura ou precise de orientação para esse processo, o GP deverá consultar o documento de referência de marcos ou entrar em contato com o time do PMO. Marcos Handover Kickoff Deadline (Prazo Proposta) Handoff End Date (Prazo Estimado Móvel) Close out (Realizado) Migration Documentation IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 6 spnet by vivo 1- Na tela inicial do projeto, localize e clique em "marcos" [CENTROC-TORRE TEMPLATE PADRÃO CRIAÇÃO PROJ Vião Geral Tarsfas Marcos DESENVOЛМЕНИТО ПЕ ЗЕНТEMASIDA Registrus De Horas Financeito Arquivos Comseves Feed De Atividades Horas Marcos 2012 Nome Pessoa Responsável Prazo Situação Hiandurer Assistéricia PMO 01/01/2000 9321 days الميةة Assistência PMO 01/01/2000 9321 days Deadine Assistència PMO 01/01/2000 9321 days Hindutt Assistéricia PMO 01/01/2000 9321 days End Date Assistencia PMO 01/01/2000 9321 days 2- A tela seguinte deixará todos os marcos editáveis, clique no que deseja fazer a alteração e edite. Lembre-se de alterar o responsável, e caso o marco tenha sido concluído, marque-o como concluído. IMPORTANTE: NÃO altere o nome do marco! Editar Marco 01/06/2000 Naci Антени PMO Camar C C C IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 7 spnet by vivo O próximo passo é preparar o documento de handover com as informações do projeto e agendar a reunião de Handover com o time técnico, CO, CX, Tech Sales (TS). Em alguns handovers, é importante adicionar o team lead da área do projeto como opcional. Essa reunião visa preparar o time para a reunião de Kick-off com o cliente e analisar se o que está na proposta técnica é, de fato, viável e se há pontos a serem esclarecidos com o cliente ou ao cliente. Caso haja alguma discordância entre o que está no escopo e o que pode ser feito, CO e TS devem auxiliar nessa nova negociação com o cliente. Os cases de sucesso funcionam como uma "vitrine" para a empresa, mostrando a futuros clientes e ao mercado que ela é capaz de entregar determinada solução com excelência, comprovando que já o fez através dessa história que relata um caso em que um cliente tinha uma dor e a organização foi capaz de atuar sobre ela para solucioná-la, gerando resultados de destaque. Os cases são essenciais para adquirir as Expertises e Specializations da Google Cloud. O fluxo de cases se inicia no handover. O gerente do projeto questiona no handover algumas informações para CO sobre o desafio do cliente e sua vertical. TS também poderá contribuir. O indicado é realizar cases com projetos. Provas de conceito (POCs) e demos não podem ter cases. Uma dica para produtividade, é utilizar o NotebookLM para criar o documento de handover. No NotebookLM, você pode adicionar a proposta comercial, técnica, template do handover e solicitar para que ele preencha os campos que estão no handover. Segue exemplo de prompt para usar no handover após acrescentar as propostas e template do handover no NotebookLM: Preencha documento de Handover com as informações que estão na proposta comercial e técnica IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 8 spnet by vivo 4.3.4 Check-list do Handover CHECKLIST HANDOVER Ler o contrato/SOW/PT Preencher o documento de Handover Pedir para o time técnico ler a Proposta Técnica Agendar reunião com time técnico, CO, TS, CX (todos obrigatórios) Ver base de lições aprendidas de projetos do mesmo cliente e/ou escopo similar Gravar a reunião e salvar a gravação na pasta do projeto Inicie pedindo para que o CO, CX e TS apresentem ao time técnico um panorama do cliente, abordando o objetivo do projeto, principais dores e expectativas Mostre o que você registrou com base nos documentos que foram compartilhado. Aproveite para tirar dúvidas e fazer questionamentos importantes. Preencha o forms de Feedaback de TechSales OBSERVAÇÕES: Se necessário, fazer um Handover com o time da Google. É essencial demonstrar ao time que você leu a PT/SOW e aproveitar esse momento para esclarecer dúvidas, garantindo que seu entendimento do projeto esteja totalmente alinhado com o que foi acordado com o cliente. Após o handover, o GP deve avaliar o Tech Sales por meio do forms de pesquisa de satisfação. Finalizado o Handover e não sendo identificada nenhuma inconsistência entre as informações da Proposta Técnica (PT) e o que foi apresentado durante a reunião de handover que possa impedir o andamento do projeto, é hora de enviar e-mail ao cliente com o Termo de Abertura do Projeto (TAP) preenchido e proposta de agenda, com dia e horário, para fazer a reunião. Caso o cliente encontre um empecilho no documento do TAP, é preciso que seja corrigido antes de efetivamente acontecer a reunião de kick-off. Para isso, é necessário envolver o TS e o CO. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 9 spnet by vivo Você também pode usar o NotebookLM para ajudar no preenchimento do TAP. Segue exemplo de prompt para ser usado adicionando o documento de handover do projeto e template TAP: Preencha documento de Termo de Abertura do Projeto com as informações que estão no documento de handover do CLIENTE ENTRADA DO PROJETO Assistência PMO recebe o projeto via Fresh Service. Assistência PMO Informa sobre o projeto no canal DT-Novas-Projetos. Assistência PMO cria a pasta do projeto no drive. Assistência PMO adiciona o GP no canal de PV do projeto que se tornará o canal do projeto. Assistência PMO aciona team leaders técnicos e do PMO para alocar recursos. Assistência PMO envia email de boas vindas ao cliente. Assistência PMO envia email de boas vindas ao cliente. GP analisa as propostas técnicas e comerciais ou SOW para agendar handover e preparar documento. Após handover, GP cría o TAP e envia TAP sugestões de data de kick- off para o cliente. GP realiza o kick-off com o cliente. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 10 spnet by vivo 4.3.5 Participantes das comunicações Há determinados perfis que o gerente de projetos deve convidar para reuniões e copiar em comunicações por email. Veja quem convidar/copiar nas reuniões e e-mails: HANDOVER Gerente de Projetos (responsável) Time técnico Customer Onboarding Customer Experience Tech Sales Lider da área (avaliar necessidade) CLOSE OUT Gerente de projetos (responsável) Customer Onboarding (opcional) Customer Experience (opcional) Time técnico Cliente PMO Quality GN Vivo (caso seja solicitado) Suporte CP (caso seja projeto de Colab) STATUS REPORT Gerente de projetos (responsável) Customer Onboarding Customer Experience Time técnico FRS Google GN Vivo (caso seja solicitado) Cliente REUNIÕES E COMUNICAÇÕES HANDOFF Gerente de projetos (responsável) Customer Onboarding Customer Experience Líder da área (opcional) Time técnico MEET COM CLIENTE Gerente de projetos (avaliar agenda) Time técnico Cliente KICK-OFF Gerente de Projetas (responsável) Time técnico Customer Onboarding (opcional) Customer Experience (opcional Tech Sales FSR Google GN Vivo (caso seja solicitado) Cliente E-MAILS SOBRE O PROJETO Gerente de Projetos (responsável) Time técnico (avaliar teor) Líder da área Customer Onboarding Customer Experience FSR Google (avaliar teor) Cliente (avaliar teor) GN Vivo (avaliar teor) ce-colaboracao@ipnet.cloud (caso seja projeto de Colab) 6 Há exceções sobre a inclusão do CO e CX nas meets com os clientes, caso o projeto esteja com temperatura crítica ou o cliente é estratégico. Quando ocorrer essas situações, é importante questionar ao CO e CX no handover sobre a participação nas reuniões. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 11 spnet by vivo 4.4 Iniciando o projeto e etapa de planejamento Para o Kick-off, faça uma apresentação, analisando as peculiaridades do projeto, detalhando o que está no escopo, o que está fora, suas premissas, como vai funcionar a comunicação entre GP e cliente, quem são as pessoas envolvidas no projeto, a forma de status report³ que o cliente deseja etc. Essa reunião DEVE ser gravada. Envie um e-mail de pós-Kick-off (Apêndice B) com os alinhamentos feitos durante a reunião e as pendências que ficaram para os próximos encontros. Importante enviar, como anexo, a gravação da reunião e o template da apresentação. Outros arquivos, conforme necessidade e tipo de projeto, também podem ser enviados, como cronograma, registro de ocorrências etc. Crie o canal de comunicação com o cliente, que pode ser Spaces ou WhatsApp. Neste canal você deverá adicionar CO, CX, líder técnico e do PMO, equipe técnica e gerente de programa. É importante ter um meio de comunicação para além do e-mail para que os avisos sejam dados de forma mais instantânea e rápida. Assim, faça os alinhamentos, para registro, por e-mail, e encaminhe mensagem/lembrete para o cliente no canal escolhido. Com o canal criado, envie a mensagem de boas vindas. 4.4.1 Paymo | Assistente PMО A seguir, vamos detalhar o que é feito pelo assistente do PMO dentro da Paymo. O assistente do PMO, cria o projeto dentro da Paymos seguindo as seguintes etapas: + Add Project List Home Clientes Projetos (163) Projetos People Usuários Projeto Teste #123 IPNET SERVICOS EM NUVEM E DESENVOLVIMENTO DE SISTEMAS LTDA 506 attulado 9 3 Relatório com frequência semanal ou quinzenal enviado ao cliente ou apresentado em reunião para acompanhamento do projeto. 4 Não esqueça de pedir autorização para iniciar a gravação e, após iniciá-la, mencione a LGPD e a possibilidade de interrupção da gravação a qualquer momento caso alguém se sinta incomodado. 5 IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 12 spnet by vivo A segunda etapa será de preenchimento das informações do projeto, começando pelo nome de identificação. Basic Information Cobrança PRO-DIA POCI ASSESSMENT SECURITY CARREFOUN Detsuit Workflow 240090 Estimativa 250 A primeira informação a ser preenchida nessa TAG deverá ser o centro de custo, que é dividido em: Professional Services (PS) • Sustentação (MSP) A segunda sigla deverá ser referente a Torre do projeto, que está dividido em: Basic Information NOME DO PROJETO [PROJ-DIA POC] ASSESSMENT SECURITY Adicionar Descrição Centro de Custo Cobrança MÉTODO DE COBRANÇA Projeto de Custo Fixo CUSTO DO PROJETO Torre IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 13 spnet by vivo ,"INFRA Colaboração Professional Services (PS) ","DEV " ,"DIA SECOPS " "Managed Services (MSP) ","Data Services Cloud Services Geo Services Finops Alocação " A terceira sigla, POC (Proof of Concept, ou Prova de Conceito) refere-se a projetos desenvolvidos para testar a viabilidade de uma ideia ou tecnologia. É uma forma de validar conceitos antes de investir recursos significativos. A sigla só deverá ser adicionada caso o projeto seja do modelo POC. Basic Information NOME DO PROJETO [PROJ-DIA POC ASSESSMENT SECURITY Adicionar Descrição Ao criar um novo projeto e atribuir a um cliente, caso o mesmo apareça duplicado, deve-se utilizar sempre o primeiro e os demais devem ser excluídos, para evitar confusões e garantir que o projeto esteja vinculado corretamente ao cliente. CLIENTE KLEVER Okleve KLEVER KLEVER + Adicionar Um Novo Cliente RJ: Av. Cidade VEJSERVING widar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 14 spnet by vivo PASSO A PASSO DE COMO EXCLUIR CLIENTE: Home 1 client in your view is selected. Set Status Export Clients X Clientes Cliente Projetos Projetos Ati... Horas Trabolhadas Projetos Arq. Members in.... Hours Warke People KLEVER 2 7 5 h 15 m 18900 Usuários KLEVER Guests KLEVER Visão Geral Contatos Proj Faturas Arquivar Cliente Delete Client Basic info Valoi Ao adicionar o método de cobrança, selecione Projeto de custo fixo, e em estimativa de horas, deve ser adicionado as horas TOTAIS da MC. O campo de custo do projeto deve ser preenchido com o valor do projeto, caso for em dólar, identificar na descrição do projeto, adicionando valor em dólar e câmbio. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 15 spnet by vivo Basic Information NOME DO PROJETO [PROJ-DIA] Consultoria Looker Adicionar Descrição CLIENTE LOJAS AMERICANAS WORKFLOW DO PROJETO Default Workflow Cobrança METODO DE COBRANÇA Projeto de Custo Fixo CUSTO DO PROJETO 0 Estimativa ESTIMATIVA DE HIRAS Estimativa de Horas ID DO PROJETO FR-0051256 Salvar Projeto Cancelar ESTIMATIVA DE HORAS 50 EMAIL ALERT THRESHOLD 90% : Após salvar o projeto, o passo seguinte será adicionar o GP no projeto: Selecionar a [PROJ-GWS] Workspace Migration AG Great ALGAR TECH Tarefas Marcos Registros De Moras Financeiro Arquivos Conversas Feed De Atividades Search people or invite new ones Select All Bruna Yasmim bruna.yasmin@ipnet.cloud ELISA REGINA FLACH elisa.flach@ipnet.cloud Ingra Project Member De Project Manager Project Member ingra@ipnet.cloud IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 16 spnet by vivo Em seguida, o template do projeto deverá ser adicionado seguindo esse passo: [PROJ-GWS] Workspace Migration SR-213132 AUGAR TECH Completo Visão Geral Tarefas Marcos Registros De Horas Financeiro Convert to Estimate Duplicate Project + Adicionar Tarefa 91 TAREFA e adicionar o template correspondente ao projeto A Salvar como Template de Projeto Adicionar do Template do Projeto Archive Project Delete Project Adicionar do Template do Projeto X Nome do Template Apigee Reagendar CHATBOT Apply Template Foundation $-GCP$ Can Novo Modelo de Projeto Sustentação Template Mínimo Padrão Workspace Migration (GWS) | FT Workspace Migration (GWS) | PROJ idade IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 17 spnet by vivo Com o projeto já criado e o gerente de projetos já adicionado, o próximo passo é adicionar os arquivos do projeto, como a SOW, MC, PT e PC. Basta ir em "arquivos" e adiciona-los. [PROJ-DIA] Consultoria Looker AFR-0051256 LOJAS AMERICANAS Tarefas Visão Geral 2 Marcos Registros De Horas Financeiro Arquivos Conversas Feed De Atividades O link do drive deve ser adicionado na descrição do projeto. O passo seguinte será inserir a informação da previsão de encerramento do projeto (que consta no contrato), na aba "conversas". ATENÇÃO: essa info deverá ser escrita exatamente dessa forma: "Previsão Inicial de encerramento". [PROJ-DIA] Consultoria Looker Vixão Geral LOJAS AMERICANAS Tareanas Marcos + Adicionar Conversa Create new Discussion Registros De Horas Financeiro Arquivos Conversas Feed De Atividades Previsão de encerramento dia 25/12 IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 18 spnet by vivo Ainda na aba "conversas', deverá ser acrescentado o template de status report do projeto: ATENÇÃO: 17 Previsão de encerramento: Observações gerais: Causa do atraso: STATUS REPORT CONCLUÍDO Conclusão: 21/11/24 Encerramento: 05/12/24 Observações gerais: Projeto foi concluído de forma satisfatória, com feedback positivo por parte do cliente. Tempo de projeto: 51 dias (kickoff: 16/10 encerramento: 05/12) Justificativa para o atraso: cliente teve dificuldades de encontrar internamente o responsável pela liberação das credenciais. 4.3.2 Paymo | GP A seguir, vamos detalhar o que é feito pelo GP dentro da Paymo na etapa de planejamento. Uma vez adicionado ao projeto, o GP deve validar o cronograma template adicionado pelo assistente na aba "tarefas". Feita essa validação macro, é preciso que seja feito o detalhamento das atividades de acordo com a realidade do cliente em questão e com o escopo; definir prazos e responsáveis para as tarefas. Importante validar com o time técnico se todas as informações fazem sentido. Na aba "Marcos", é responsabilidade do GP adicionar os seguintes marcos: Handover [Data Real do Handover] Kickoff [Data Real do Kickoff] IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 19 spnet by vivo Deadline [Data Final Na Proposta] Handoff [Data Real do Handoff] End Date [Data Final Planejada] Close out [Data Real do Close out] • Migration [Data Virada MX] Documentation [Data da Entrega da Documentação] Para isso, siga o passo a passo: Acesse a aba "Marcos" dentro do projeto que está gerenciando. É possível mudar a visualização clicando no canto superior direito. Visão Geral Tarefas Manos Registros De Horas Financeiro Arquivos Conversas Feed De Atividades + 9 ← Dezembro 2024 No Milestones → COM TRE QUA Π Měs Més SER Agenda Dert 2 3 4 5 5 10 11 13 14 15 16 17 18 19 20 23 24 25 26 27 24 30 31 Feito isso, selecione o dia que aconteceu o Kick-off ou que vai acontecer e preencha com o seguinte nome: Kickoff IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 20 spnet by vivo Adicionar Marco NOME Início do projeto | Kickoff PRAZO SEND REMINDER 12/12/2024 Não enviar PESSOA RESPONSÁVEL Thais Tiemi Gushiken LISTAS DE TAREFAS ASSOCIADAS Selecionar Lista de Tarefas Salvar Marco Cancelar Logo após, clique em "Salvar". Caso tenha feito o passo a passo corretamente, em "Visão Geral" a informação do macro irá aparecer da seguinte Visão Geral Tarefas Marcos Registros De Horas Financeiro Arquivos Conversas Feed De Atividades Horas Marcos Dec 2 3 455ae10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 Nome Pessoa Responsavel Prazo Situação Imcio do projeto | Kickoff Thais Tiemi Gushiken 12/12/2024 forma: IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 21 spnet by vivo O mesmo passo a passo deve ser feito para cadastrar os outros marcos. ATENÇÃO! É importante se atentar ao nome do marco. Eles devem estar exatamente com a mesma escrita que foi passado anteriormente, sem os itens entre colchetes. Para apoiar o PMO Quality, o gerente de projetos deve atualizar alguns itens na área da conversa. O GP deve preencher a descrição do campo de MO Vendida (com a margem operacional que está na memória de cálculo do projeto) e MO Planejada (com a margem operacional de acordo com as horas confirmadas pelo time técnico após a realização de alinhamento técnico com o cliente). A margem planejada pode ser gerada por meio desse modelo. A margem planejada pode ser debatida no handover ou logo na sequência do kick-off. Não avance no projeto sem ela. MO VENDIDA 6,08% MO PLANEJADA -14,30% Também é dever do GP adicionar o contato do sponsor principal no campo CONTATOS. O GP também deve atualizar sempre que houver alguma alteração na temperatura do projeto no campo TEMPERATURA, justificando o por quê da escolha da atual temperatura do projeto. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 22 spnet by vivo CONTATOS NOME: Alex Graças CARGO: Assessor de Projetos de Inovação TELEFONE: (41) 3330-8481 E-MAIL: alex.gracas@tre-pr.jus.br TEMPERATURA Ramon esta de volta, mas agora temos como ponto de atenção a margem operacional. Previsão era -2% Hoje $(10/06)$ estamos em-15,23% Motivos que aumentaram a margem negativa: Will esta nos apoiando e trabalhando junto com Ramon (Will é senior) Afastamento do Ramon exigiu mais horas de gestão Cliente pediu pra incluirmos na entrega as mesmas regras de governança que existe hoje no Oracle Bl. Não esta descrito de forma clara no escopo, mas se tratando de uma migração, fica aberta a interpretação. Por questões de relacionamento, optamos por absorver. O GP também deve adicionar o contato do Googler (FSR) do projeto no campo GOOGLER. O layout deve ser seguido conforme o exemplo abaixo e incluído na descrição da conversa. Caso exista mais de um Googler que ache válido compartilhar, pode copiar a conversa e adicioná-lo. GOOGLER NOME: Tiago Santos CARGO: FSR TELEFONE: E-MAIL: tiagodsantos@google.com IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 23 spnet by vivo Caso queira conferir se o preenchimento dos marcos foi feito corretamente, você pode conferir neste dashboard. Há casos que o cliente quer começar o projeto somente com um NDA (Non-Disclosure Agreement, que em português significa Acordo de Não Divulgação ou Termo de Sigilo e Confidencialidade). Caso o cliente tenha o seu próprio, o NDA precisa ser enviado para análise ou ajustes para o time do DPO da IPNET (dpo@ipnet.cloud) e o Rafael Borba (rafael.borba@ipnet.cloud). Caso o cliente não tenha um e queira um NDA, o gerente precisa solicitar esse NDA para a Paloma Pozes (paloma.pozes@ipnet.cloud) e nesse pedido precisa ter o nome da empresa do cliente, CNPJ, endereço e email do assinante e testemunha. Caso o projeto esteja com a billing com a IPNET ou o cliente tenha créditos, o gerente deve preencher a planilha CBD e acompanhar a billing durante o projeto. 4.4 Em execução Cada projeto tem suas peculiaridades, pois, além das cinco grandes áreas (Cloud, Colaboração, Dev, DIA e Secops), o escopo pode ser diferente e personalizado. Como primeira reunião pós kick-off, na maioria dos projetos, é agendado um alinhamento técnico, onde o time do projeto analisa o ambiente do cliente ou troca informações mais técnicas sobre o projeto. A presença do GP nessa reunião não é obrigatória. Para isso, não esqueça de colocar o time técnico como coorganizador da agenda e combinar de gravarem e transcrevam a reunião. Para adicionar um coorganizador da agenda, siga o passo-a-passo desse link. Para criação do cronograma, o GP pode usar como base os templates já existentes na Paymo. Em cada projeto, o time da Assistência do PMO já inclui o template. Mas como já foi relatado, é importante confirmar essas atividades com o time técnico e verificar se precisa adicionar ou excluir algumas atividades. A criação do cronograma deve ser feita pós alinhamento técnico, onde o time do projeto terá insumos do ambiente do cliente. Para as atividades técnicas, é importante que você analise as necessidades do time para o acompanhamento do projeto, tanto internamente quanto com o cliente. Assim, você pode propor agendas diárias, semanais, quinzenais, durante a execução das atividades. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 24 spnet by vivo HANDOVER PLANNING KICK-OFF ALINHAMENTO TECNICO TIPOS DE REUNIÕES 6 CLOSEOUT HANDOFF DAILY esse daqui não é obrigatório, ok? STATUS REPORT IMPORTANTE: Verifique os espaços livres na agenda do time técnico. Quando sugerir uma agenda para os clientes, feche imediatamente a agenda do time técnico. Deixe HOLD à frente do nome da agenda (ex. HOLD [Oi] Alinhamento técnico). Com o aceite do cliente, atualize e envie os convites. O tempo de espera pela resposta do cliente deve ser de 48h, assim, caso não liberamos 0 haja retorno, FECHE A AGENDA DO TIME TÉCNICO FAÇA A COMUNICAÇÃO SER EFETIVA OUÇA AS NECESSIDADES DO TIME TÉCNICO, TANTO DA IPNET QUANTO DO CLIENTE IMPORTANTE FIQUE ATENTO AOS CANAIS DE COMUNICAÇÃO INTERNOS E EXTERNOS ACOMPANHE O CRONOGRAMA PARTICIPE DE TODOS OS ALINHAMENTOS... pré-agendamento. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 25 spnet by vivo ATENÇÃO! O gerente de projeto deve evitar reuniões excessivas com o time técnico para alinhar status de reuniões técnicas. Uma dica é solicitar esses status via chat do projeto ao técnico e sempre colocar as reuniões técnicas para serem transcritas ou gravadas. 4.4.1 Registros Durante a execução dos projetos, é importante manter o preenchimento da Paymo, das planilhas, drive e documentos constantemente atualizados. Vamos retomar quais são eles: Aba "Tarefas" da Paymo, com deadlines, atividades e responsáveis; Status Report no Paymo a atualização deve ser feita semanalmente ou quando ocorrer algo relevante no projeto Temperatura - a atualização deve ser feita semanalmente ou quando ocorrer algo relevante no projeto • Comunicação nos canais - manter time interno e cliente atualizados sobre o projeto. Registro de horas do time; Drive do projeto. Margem operacional do projeto Durante a execução do projeto, o GP também deve realizar o preenchimento do relatório do projeto. Este relatório deve ser adaptado de acordo com o projeto. Nele deve constar o plano de riscos, plano de comunicação, matriz RACI e gerenciamento de stakeholders. Toda semana, o GP deve atualizar o cliente com o status report do projeto. O cliente escolhe se quer via meet ou via email no kick-off. Se ele quiser via meet, você pode montar uma apresentação e enviar o email após a reunião para documentação. O email do status report deve conter: Principais Entregas Realizadas • Listar as atividades finalizadas no período IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 26 spnet by vivo Se aplicável, destacar entregas importantes ou marcos atingidos • Colocar a porcentagem de atividades realizadas Próximas Ações e Atividades Planejadas Descrever os próximos passos ou entregas previstas Pendências/Restrições Informar bloqueios ou pontos que impactam o projeto Quem está atuando na resolução Pedidos de Ajuda Descreva a necessidade Observação: Importante manter todos os tópicos preenchidos - por exemplo: Pendências / Restrições: Sem pendência ou restrição. Dessa forma, evitamos dúvidas e garantimos que está claro para todos que realmente não há pendências, e não que o item foi apenas esquecido. Neste email, o GP pode também adicionar o template de status report. DICA! Para otimizar o tempo na hora de escrever o email de status report usando a transcrição das reuniões, podemos usar o seguinte prompt no Gemini: Sou gerente de projetos e tivemos ontem nossa reunião DE TAL TEMA Com o time NOME DO CLIENTE e preciso de um email de acompanhamento da nossa reunião de ontem. Vou subir o pdf da transcrição da reunião e preciso dos principais pontos tratados, combinados e próximos passos. Pode desconsiderar qualquer assunto que não seja sobre Ο NOME DO PROJETO. Comece com Bom dia, time NOME DO CLIENTE. Além disso, add também um item sobre gestão do conhecimento, em que compartilhamos link da gravação do nosso encontro de ontem. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 27 spnet by vivo Caso o GP precise fazer uma ata, pode usar o seguinte prompt. Assuma o papel de um gerente de projeto sênior. Contexto: Sou o gerente de projetos responsável pelo projeto de 'NOME DO PROJETO'. Foi realizada tal reunião para tal objetivo. Tarefa: Analise a transcrição da reunião em anexo e elabore um sumário executivo detalhado para minha rápida integração e para o planejamento das próximas etapas. Instruções: Sua análise deve ser estruturada nas seguintes seções, focando apenas no que é relevante para o projeto: Sumário Executivo: Um parágrafo conciso com o objetivo principal da reunião e seus resultados mais importantes. Pontos-Chave da Discussão: Utilize tópicos (bullet points) para listar os principais assuntos abordados, como: Definições de escopo (o que está dentro e fora do projeto). Prazos, metas ou marcos temporais mencionados. Riscos, desafios ou preocupações levantadas. • Requisitos técnicos ou de negócio. Decisões Tomadas: Liste de forma clara todas as decisões que foram oficializadas durante a conversa. Equipe e Responsabilidades: Apresente a equipe do projeto conforme definido pelo líder técnico, especificando os membros: técnico 1, técnico 2, técnico IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 28 spnet by vivo 3. Se houver menção a papéis, inclua-os. Próximos Passos e Ações Imediatas: Crie uma lista numerada de ações a serem tomadas. O primeiro item deve ser obrigatoriamente 'XXXXX'. Adicione outros pontos de ação que você identificar na transcrição." Sempre confira se o que a IA traz está fazendo sentido. O GP deve estar sempre atento ao escopo. Caso o cliente peça algo fora do escopo, primeiro o GP deve conferir com o time técnico se conseguimos entregar com as horas que temos propostas. Caso o time técnico fale não, o GP deve conferir com os heads se iremos adicionar esse item fora de escopo ao projeto atual. Caso o head fale não, o GP deve solicitar ao CO e TS que faça uma reunião comercial com o cliente para orçar essa nova oportunidade. É importante o GP conhecer sobre o portfolio de serviços da IPNET, pois todo projeto pode gerar uma nova oportunidade. Caso o GP veja uma nova oportunidade no cliente, ele deve preencher o forms. Todo projeto traz lições aprendidas e essas lições aprendidas devem ser anotadas nesta planilha. No final do projeto, você usa essas lições aprendidas no handoff. 4.4 Encerrando o projeto O projeto, conforme seu andamento e o cliente envolvido, terá ou não reunião de encerramento. Alguns critérios que podemos listar para essa tomada de decisão são: complexidade do projeto, problemas no decorrer do cronograma, acompanhamento ou não do sponsor durante as atividades, potencial do cliente para adesão a futuros projetos etc. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 29 spnet by vivo Assim, caso seja necessário, agende uma reunião de encerramento com o cliente para repassar os principais pontos do projeto, demonstrando os critérios de sucesso da proposta inicial. Quando todas as etapas do projeto em execução e homologação forem concluídas, o gerente de projetos deve agendar a reunião de handoff e reunião de close out. O handoff é uma reunião de encerramento com o time interno da IPNET, onde o GP passa por pontos principais como margem operacional, desafios encontrados, novas oportunidades, highlights de lições aprendidas e case de sucesso. O template do handoff a ser seguido é este aqui. No handoff, o gerente deve voltar com o tema do case. Ao final do handoff, se o projeto for considerado bem-sucedido ou for estratégico, o GP deve validar com todos os stakeholders (CO, TS, CX e time técnico) se caracteriza um case de sucesso e se devemos documentar. Em caso positivo, orientar o time ao preenchimento do template de case e direcionar para a Vitória Leitão seguir com o acompanhamento. Há um slide adicionado ao material de handoff para auxiliar nesta discussão. Após o handoff, o GP deve agendar o close out. O close out é a reunião de encerramento do projeto com o cliente. Portanto, o GP deve adicionar o mesmo time que estava no handoff e o cliente. Também devemos ter a presença de uma pessoa do PMO Quality (Ingra, Mateus Menezes ou Gabriel Calixto). Na reunião de close out, o GP passa pelo escopo do projeto, critérios de aceite, alinhamentos finais, case (caso a equipe tenha concordado em seguir), feedbacks e novos serviços. O GP apresenta a reunião normalmente, porém no final, o GP pede para o time da IPNET se retirar e passa a palavra para algum membro do PMO Quality. O GP também deve finalizar a gravação e se retirar da reunião. O membro do PMO Quality irá realizar uma pesquisa de satisfação com o cliente. O GP também deve responder avaliações sobre o time técnico, CX e CO. Após a reunião de closeout, o GP pode seguir com as documentações finais do projeto. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 30 spnet by vivo 4.4.1 Documentação final Em qualquer hipótese de encerramento, o GP deve enviar um e-mail informando sobre a finalização do projeto e solicitando a assinatura do 1) Termo de Aceite Final (TAF) e da 2) SOW (se for o caso) pelo D4Signs. Nem sempre a assinatura do TAF é realizada, mas isso pode ser acordado entre PM e cliente, bastando, nesse caso, uma confirmação no próprio e-mail de que há ciência do encerramento. Caso seja um projeto de colaboração... Há ainda a possibilidade de envio do Atestado de Capacidade Técnica (ACT), documento criado pelos PMs e que, por sugestão, podem ser de projetos do tipo: → GWS: a partir de 100 contas migradas e treinamentos → CLOUD: a partir de 15 máquinas migradas → DEV: todos (colocar quantidade de horas em cada ferramenta) → DIA: todos (colocar quantidade de horas em cada ferramenta + TB processados) IMPORTANTE: Os prazos dos projetos são extremamente importantes, por isso, caso haja atraso no cronograma de execução, em caso de SOW, precisamos comunicar à pessoa responsável pela comunicação entre Google e IPNET. Todos os documentos assinados devem ser salvos na pasta do cliente no drive. É importante fazer o monitoramento das assinaturas e, após finalizado, enviar para os responsáveis para faturamento do projeto ou arquivamento do documento pelos seguintes canais: Site utilizado pela IPNET para envio e assinatura de documentos. Nele, há cofres com os tipos de documentos: SOWS - DIA & CE e Atestados de capacidade técnica. IPNET by Vivo RJ: Av. Cidade de Lima, 86-Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 755 21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 31 spnet by vivo SOW PSF: SOW Finalizadas SOW DV: [IPNET] DVS & SOWS TAF: quando o projeto finalizar, o GP cria uma task para a Bruna Yasmin (bruna.yasmin@ipnet.cloud) no space e ela envia pra faturamento pelo email ACT: adicionar à pasta do projeto Encerre os canais de comunicação do projeto, tanto externo quanto interno. Envie uma mensagem formalizando esse encerramento e, para WhatsApp, exporte a conversa do grupo, baixe no drive do projeto, exclua as pessoas e saia do grupo. Já para o spaces, confirme se o grupo está aberto a todos da IPNET e saia. IMPORTANTE: Revise o controle financeiro do projeto neste momento! RESPONSÁVEIS PELOS PROCESSOS E SUAS ATRIBUIÇÕES A) Head B) Squad Líder C) Project Manager D) Líder Técnico E) Time técnico F) CX G) CO Matriz RACI 6. ACESSOS NECESSÁRIOS Para conseguir acompanhar os projetos e desenvolver seu trabalho de acordo com o fluxo, você vai precisar fazer parte de determinados grupo e ter liberação em alguns ambientes: A) GRUPOS DE E-MAIL: ce-pm@ipnet.cloud B) DRIVES COMPARTILHADOS: Cloud Engineering, Project management, IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 32 spnet by vivo APÊNDICE A - LISTA DE ÁREA E SUBÁREAS/PROJETOS CLOUD: Migração Lift & Shift; Deployment; Assessment + Migração; Cloud Foundation + Migração; COLABORAÇÃO (GWS): Migração para Google Workspace; Migração para Office 365 (INNUVEM); IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 33 spnet by vivo Treinamento de usuários do GWS; Treinamento de Administradores do Painel; Migração e Consultoria para Drives Compartilhados; DIA: Migração de File Server; Treinamento e Configuração de GCDS e GSPS; Configurações de roteamento de e-mails; Configurações de assinaturas em HTML via GAM. Looker Jump Start Dialog Flow Cortex Warehouse Migration Squad de Dados - Consignado Atualização do Composer Looker Studio Atualização das bases de dados Looker First Steps Warehouse First Steps Bodyshop Treinamento Looker Looker Machine Learning Power Bl Cloud Datalake Data Journey Assessment Cloud Datawarehouse DEV: App Development Consultoria AppSheet Apps Script App Modernization GeoPortal Apigee Asses + PoC Outsourcing IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 34 spnet by vivo APÊNDICE B - FLUXOGRAMA APÊNDICE C - GLOSSÁRIO ACT - Atestado de Capacidade Técnica. BIF - Quando o cliente não é elegível aos programas de incentivo, dessa forma, os projetos são feitos como um investimento do Google. IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 36 spnet by vivo PSO - Quando o Google precisa que façamos um trabalho em nome do Google. PT - Proposta técnica enviada pela IPNET para o cliente com um escopo definido. PV - Pré-vendas - Tech Sales: time que traz clientes para a IPNET. PX People Experience: time responsável pela experiência dos colaboradores IPNET. SOW - Statement of Work: Proposta técnica que enviamos para o google para conseguir os incentivos de PSF, Deployment vouncher e DAF. StratoZone plataforma que fornece um framework orientado por dados para migrar sua infraestrutura de TI para o Google Cloud. Por meio dela, você descobre automaticamente a infraestrutura atual de qualquer ambiente, analisa os benefícios de custo da nuvem pública e planeja a migração (Varre o que o cliente tem on premise em todas as aplicações e faz uma simulação do custo se ele tivesse GCP). TAF - Termo de Aceite Final. ,,,HISTÓRICO DE REVISÕES VERSÃO DATA RESPONSÁVEL MOTIVO E DESCRIÇÃO DA ALTERAÇÃO V2 30/06/2023 Juliana Revisão de processos que começaram a ser realizados pelo time de apoio IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-100 +55 (11) 3199 7300 ww.ipnet.cloud 37 IPNET by Vivo RJ: Av. Cidade de Lima, 86- Santo Cristo, Rio de Janeiro-RJ, Novocais do Porto, 8º andar. CEP:20220-710 | +55 (21) 3553 2717 SP: Av. Engenheiro Luis Carlos Berrini, 1376-5º andar, Lado B, Cidade Monções, São Paulo. CEP:04576-1001+55 (11) 3199 7300 ww.ipnet.cloud 38`;
+        
+        async function askQuestion() {
+            const question = questionInput.value;
+            if (!question) {
+                responseArea.innerHTML = '<p class="text-gray-500">Por favor, digite sua pergunta.</p>';
+                return;
+            }
+
+            loadingIndicator.style.display = 'block';
+            responseArea.innerHTML = '';
+            questionInput.disabled = true;
+            askButton.disabled = true;
+
+            const prompt = `Com base no seguinte documento sobre o guia de PM da IPNET by Vivo, responda à pergunta do usuário: "${question}". Seja conciso e direto. Se a resposta não estiver no documento, diga que a informação não foi encontrada.
+            
+            Documento: ${pdfContent}`;
+
+            try {
+                let retries = 0;
+                const maxRetries = 5;
+                const baseDelay = 1000;
+                let response;
+
+                while (retries < maxRetries) {
+                    try {
+                        const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                        const payload = { contents: chatHistory };
+                        const apiKey = "";
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                        
+                        response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        
+                        if (response.ok) {
+                            break; 
+                        } else {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                    } catch (e) {
+                        retries++;
+                        const delay = baseDelay * Math.pow(2, retries);
+                        if (retries < maxRetries) {
+                            await new Promise(res => setTimeout(res, delay));
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
+                
+                const result = await response.json();
+                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text || "Desculpe, a resposta não foi encontrada no documento.";
+                responseArea.innerHTML = `<p class="text-gray-800">${text}</p>`;
+
+            } catch (error) {
+                console.error('Erro na chamada da API:', error);
+                responseArea.innerHTML = `<p class="text-red-500">Desculpe, ocorreu um erro ao tentar obter a resposta. Por favor, tente novamente mais tarde.</p>`;
+            } finally {
+                loadingIndicator.style.display = 'none';
+                questionInput.disabled = false;
+                askButton.disabled = false;
+            }
+        }
+
+        askButton.addEventListener('click', askQuestion);
+        questionInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                askQuestion();
+            }
+        });
+
+        // Gráficos são criados aqui
+        window.addEventListener('load', function() {
+            const energeticPlayfulPalette = {
+                primary: '#D44D5C',
+                secondary: '#FFA62B',
+                accent: '#FF8C42',
+                neutral: '#F7F3E9',
+                text: '#4C4C4C'
+            };
+
+            const tooltipTitleCallback = function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            };
+            
+            const wrapLabel = (label) => {
+                const maxLength = 16;
+                if (label.length <= maxLength) return label;
+                
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                
+                words.forEach(word => {
+                    if ((currentLine + word).length > maxLength) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const rolesCtx = document.getElementById('rolesChart').getContext('2d');
+            new Chart(rolesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Gerente de Projetos (GP)', 'Assistente PMO', 'Time Técnico', 'Equipe de Negócios (CO, CX, TS)'],
+                    datasets: [{
+                        label: 'Distribuição de Responsabilidades',
+                        data: [45, 25, 20, 10],
+                        backgroundColor: [
+                            energeticPlayfulPalette.primary,
+                            energeticPlayfulPalette.secondary,
+                            energeticPlayfulPalette.accent,
+                            '#FFC971'
+                        ],
+                        borderColor: energeticPlayfulPalette.neutral,
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Proporção de Atividades por Papel',
+                            font: { size: 18 },
+                            color: energeticPlayfulPalette.text
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    }
+                }
+            });
+
+            const phasesCtx = document.getElementById('phasesChart').getContext('2d');
+            const originalLabels = ['Assistente PMO', 'Gerente de Projetos (GP)', 'Time Técnico', 'Equipe de Negócios', 'PMO Quality'];
+            const wrappedLabels = originalLabels.map(wrapLabel);
+            
+            new Chart(phasesCtx, {
+                type: 'bar',
+                data: {
+                    labels: wrappedLabels,
+                    datasets: [
+                        {
+                            label: 'Entrada',
+                            data: [5, 1, 1, 2, 0],
+                            backgroundColor: '#FFC971',
+                        },
+                        {
+                            label: 'Planejamento',
+                            data: [1, 5, 3, 4, 0],
+                            backgroundColor: energeticPlayfulPalette.secondary,
+                        },
+                        {
+                            label: 'Execução',
+                            data: [0, 4, 5, 2, 0],
+                            backgroundColor: energeticPlayfulPalette.accent,
+                        },
+                        {
+                            label: 'Encerramento',
+                            data: [0, 4, 2, 2, 4],
+                            backgroundColor: energeticPlayfulPalette.primary,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Nível de Envolvimento (Estimado)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Envolvimento dos Times por Fase',
+                            font: { size: 18 },
+                            color: energeticPlayfulPalette.text
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
